@@ -60,7 +60,7 @@
     "wol-soft/php-json-schema-model-generator-production": "^0.19.0"
   },
   "require-dev": {
-    "nunomaduro/collision": "^5.0",
+    "nunomaduro/collision": "^8.0",
     "doctrine/dbal": "^3.0",
     "facade/ignition": "^2.5",
     "fakerphp/faker": "^1.14",
