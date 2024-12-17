@@ -11,7 +11,7 @@
     "tempusdominus-bootstrap-4": "^5.39.2"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "6.6.0",
+    "@fortawesome/fontawesome-free": "6.7.2",
     "@types/bootbox": "5.2.8",
     "@types/bootstrap": "5.2.10",
     "@types/isotope-layout": "3.0.14",
