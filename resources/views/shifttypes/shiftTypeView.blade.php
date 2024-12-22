@@ -113,7 +113,7 @@
                                 @continue
                             @endif
                             @php
-                                $isAllowedToEdit=\Lara\Utilities::requirePermission("admin") || $shift->schedule->event->section->title == Session::get('userClub');
+                                $isAllowedToEdit=\Lara\Utilities::requirePermission("admin") || $shift->schedule->event->section->title == session('userClub');
                             @endphp
 
                             <tr class="{!! "shiftType-event-row" . $shift->id !!} @if(!$isAllowedToEdit) active @endif"

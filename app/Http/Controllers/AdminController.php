@@ -8,7 +8,6 @@
 
 namespace Lara\Http\Controllers;
 
-use Redirect;
 use View;
 
 use Lara\Utilities;
@@ -20,7 +19,7 @@ class AdminController extends Controller
     function startUpdateProcess(){
         /** if you are no admin, you will be redirected back */
         if(!Utilities::requirePermission('admin')){
-            return Redirect::back($status = 403);
+            return back($status = 403);
         }
         return View::make('update');
     }

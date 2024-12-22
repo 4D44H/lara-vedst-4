@@ -6,7 +6,7 @@ use Closure;
 use Auth;
 use Lara\Utilities;
 use Lara\utilities\RoleUtility;
-use Session;
+
 
 class ManagingUsersOnly
 {
@@ -21,12 +21,12 @@ class ManagingUsersOnly
     {
         if (!Auth::check()) {
             Utilities::error(trans('auth.notAuthenticated'));
-            return Redirect('/');
+            return redirect('/');
         }
 
         if (!Auth::user()->isAn(RoleUtility::PRIVILEGE_MARKETING, RoleUtility::PRIVILEGE_ADMINISTRATOR)) {
             Utilities::error(trans('auth.missingPermissions'));
-            return Redirect('/');
+            return redirect('/');
         }
 
         return $next($request);

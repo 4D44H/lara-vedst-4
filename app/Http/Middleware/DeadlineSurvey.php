@@ -4,8 +4,8 @@ namespace Lara\Http\Middleware;
 
 use Carbon\Carbon;
 use Closure;
+use Lara\Http\Controllers\SurveyController;
 use Lara\utilities\RoleUtility;
-use Redirect;
 use Lara\Survey;
 
 class DeadlineSurvey
@@ -53,6 +53,6 @@ class DeadlineSurvey
             'Die Deadline ist überschritten, jetzt können nurnoch Clubleitung/Marketing/Admin die Umfrage ausfüllen');
         $request->session()->put('msgType', 'danger');
 
-        return Redirect::action('SurveyController@show', [$survey->id]);
+        return redirect()->action([SurveyController::class, 'show'], [$survey->id]);
     }
 }

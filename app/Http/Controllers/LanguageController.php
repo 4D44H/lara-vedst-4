@@ -4,9 +4,6 @@ namespace Lara\Http\Controllers;
 
 
 use Auth;
-use Config;
-use Redirect;
-use Session;
 
 use Lara\Settings;
 
@@ -14,8 +11,8 @@ class LanguageController extends Controller
 {
     public function switchLang($lang)
     {
-        if (array_key_exists($lang, Config::get('languages'))) {
-            Session::put('language', $lang);
+        if (array_key_exists($lang, config('languages'))) {
+            session(['language' => $lang]);
 
             $user = Auth::user();
             if ($user) {
@@ -31,6 +28,6 @@ class LanguageController extends Controller
             }
         }
 
-        return Redirect::back();
+        return back();
     }
 }

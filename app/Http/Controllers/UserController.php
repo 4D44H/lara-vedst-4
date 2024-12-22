@@ -18,8 +18,6 @@ use Lara\UserSectionsRoleView;
 use Lara\Utilities;
 use Lara\utilities\RoleUtility;
 use Log;
-use Redirect;
-use Session;
 use View;
 
 class UserController extends Controller
@@ -151,7 +149,7 @@ class UserController extends Controller
         if (!Auth::user()->can('update', $user)) {
             Utilities::error(trans('mainLang.accessDenied'));
 
-            return Redirect::back();
+            return back();
         }
 
         $user->fill($request->all())->save();
@@ -163,7 +161,7 @@ class UserController extends Controller
 
         Utilities::success(trans('mainLang.update'));
 
-        return Redirect::back();
+        return back();
     }
 
     /**
@@ -180,7 +178,7 @@ class UserController extends Controller
         if ($user->id == \Auth::user()->id) {
             Utilities::error(trans('mainLang.accessDenied'));
 
-            return Redirect::back();
+            return back();
         }
         $person = $user->person;
         $person->prsn_ldap_id = null;
@@ -204,7 +202,7 @@ class UserController extends Controller
         Log::info('User: '.\Auth::user()->name.' deleted '.$user->name);
         Utilities::success(trans('mainLang.changesSaved'));
 
-        return Redirect::action('UserController@index');
+        return redirect()->action([UserController::class, 'index']);
     }
 
     public function agreePrivacy()
@@ -213,13 +211,13 @@ class UserController extends Controller
         $user->privacy_accepted = new \DateTime();
         if ($user->save()) {
             Log::info('User: '.$user->name.' ('.$user->person->prsn_ldap_id.') accepted the privacy policy.');
-            Session::put('message', trans('mainLang.privacyAccepted'));
-            Session::put('msgType', 'success');
+            session()->put('message', trans('mainLang.privacyAccepted'));
+            session()->put('msgType', 'success');
 
             return redirect('/');
         }
-        Session::put('message', 'mainLang.fatalErrorUponSaving');
-        Session::put('msgType', 'danger');
+        session()->put('message', 'mainLang.fatalErrorUponSaving');
+        session()->put('msgType', 'danger');
         redirect();
     }
 
@@ -235,7 +233,7 @@ class UserController extends Controller
         if (!Auth::user()->can('update', $user)) {
             Utilities::error(trans('mainLang.accessDenied'));
 
-            return Redirect::back();
+            return back();
         }
         $data = [];
         if (Auth::user()->isAn(RoleUtility::PRIVILEGE_ADMINISTRATOR) || Auth::user()->hasPermissionsInSection($user->section,
@@ -244,7 +242,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 Utilities::error(trans('mainLang.changesWereReset'));
 
-                return Redirect::back()->withErrors($validator)->withInput($request->all());
+                return back()->withErrors($validator)->withInput($request->all());
             }
             $data['givenname'] = $request->input('givenname');
             $data['lastname'] = $request->input('lastname');
@@ -328,6 +326,6 @@ class UserController extends Controller
         }
 
 
-        return Redirect::back();
+        return back();
     }
 }

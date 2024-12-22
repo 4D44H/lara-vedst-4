@@ -20,12 +20,12 @@ class ClOnly
     {
         if (!Auth::check()) {
             Utilities::error(trans('auth.notAuthenticated'));
-            return Redirect('/');
+            return redirect('/');
         }
 
         if (!Auth::user()->isAn(RoleUtility::PRIVILEGE_CL,RoleUtility::PRIVILEGE_ADMINISTRATOR)) {
             Utilities::error(trans('auth.missingPermissions'));
-            return Redirect('/');
+            return redirect('/');
         }
 
         return $next($request);

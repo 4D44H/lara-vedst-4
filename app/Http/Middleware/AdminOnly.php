@@ -5,7 +5,6 @@ namespace Lara\Http\Middleware;
 use Closure;
 use Lara\Utilities;
 use Lara\utilities\RoleUtility;
-use Redirect;
 use Auth;
 
 class AdminOnly
@@ -20,13 +19,13 @@ class AdminOnly
     public function handle($request, Closure $next)
     {
         if (!Auth::check()) {
-            Utilities::error(trans('auth.notAuthenticated'));
-            return Redirect('/');
+            Utilities::error(__('auth.notAuthenticated'));
+            return redirect('/');
         }
 
         if (!Auth::user()->isAn(RoleUtility::PRIVILEGE_ADMINISTRATOR)) {
-            Utilities::error(trans('auth.missingPermissions'));
-            return Redirect('/');
+            Utilities::error(__('auth.missingPermissions'));
+            return redirect('/');
         }
 
         return $next($request);

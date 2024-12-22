@@ -18,7 +18,7 @@ class AddInitialBdUsers extends Migration
      */
     public function up()
     {
-        $allBDusers = Config::get('bd_users.initial');
+        $allBDusers = config('bd_users.initial');
 
         if ($allBDusers) {
             // creating the persons is tricky. The 'max' query is probably cached, thus we need to manually

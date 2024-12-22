@@ -3,7 +3,6 @@
 namespace Lara\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Redirect;
 use View;
 
 class LegalController extends Controller
@@ -15,6 +14,6 @@ class LegalController extends Controller
     // Generate a page for impressum
     public function showImpressum() {
     	// Will redirect to ILSC Impressum for now, might need to create own page later
-    	return redirect()->to("http://www.il-sc.de/impressum");
+    	return redirect("http://www.il-sc.de/impressum");
     }
 }

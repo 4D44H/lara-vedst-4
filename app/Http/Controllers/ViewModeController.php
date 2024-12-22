@@ -32,7 +32,7 @@ class ViewModeController extends Controller
             $userSettings->view_mode = $mode;
             $userSettings->save();
         }
-        \Session::put('view_mode', $mode);
+        session()->put('view_mode', $mode);
         
         return redirect()->back();
     }

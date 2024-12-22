@@ -4,8 +4,8 @@ namespace Lara\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Lara\Http\Controllers\MonthController;
 use Lara\Survey;
-use Redirect;
 
 class PrivateEntry
 {
@@ -27,7 +27,7 @@ class PrivateEntry
         } else {
             $request->session()->put('message', 'Dir fehlt die nötige Berechtigung!');
             $request->session()->put('msgType', 'danger');
-            return Redirect::action('MonthController@currentMonth');
+            return redirect()->action([MonthController::class, 'currentMonth']);
         }
     }
 }

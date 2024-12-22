@@ -52,11 +52,13 @@ class User extends Authenticatable
         'password', 'remember_token', 'google2fa_secret',
     ];
 
-    protected $dates = [
-        'on_leave'
-    ];
-
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
+        'on_leave' => 'datetime',
         'is_name_private' => 'boolean'
     ];
 

@@ -18,8 +18,8 @@ class Verify2FaToken
 
         if (!($request->is('2fa') or $request->is('lang*'))) {
             if (\Auth::check()) {
-                if (!empty(\Auth::user()->google2fa_secret ) and !\Session::get("2faVeryfied", false)) {
-                    \Session::push('targeturl',$request->url());
+                if (!empty(\Auth::user()->google2fa_secret ) and !session("2faVeryfied", false)) {
+                    session()->push('targeturl', $request->url());
                     return \Redirect::route('lara.2fa');
                 }
             }

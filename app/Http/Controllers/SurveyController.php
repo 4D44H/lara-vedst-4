@@ -3,7 +3,6 @@
 namespace Lara\Http\Controllers;
 
 use Auth;
-use Config;
 use Illuminate\Http\Request;
 use Hash;
 use Lara\Library\Revision;
@@ -12,10 +11,7 @@ use Lara\RevisionEntry;
 use Lara\SurveyAnswerCell;
 use Lara\Utilities;
 use Lara\utilities\RoleUtility;
-use Session;
-use Redirect;
 use DateTime;
-
 use Lara\Survey;
 use Lara\QuestionType;
 use Lara\SurveyQuestion;
@@ -96,7 +92,7 @@ class SurveyController extends Controller
             SurveyQuestion::make($survey, $order, $question, $type, $isRequired, $options);
         }
 
-        return Redirect::action('SurveyController@show', [$survey->id]);
+        return redirect()->action([SurveyController::class, 'show'], [$survey->id]);
     }
 
 
@@ -128,10 +124,10 @@ class SurveyController extends Controller
 
         Revision::deleteWithRevision($survey);
 
-        Session::put('message', 'Umfrage gelöscht!');
-        Session::put('msgType', 'success');
+        session()->put('message', 'Umfrage gelöscht!');
+        session()->put('msgType', 'success');
 
-        return Redirect::action('MonthController@currentMonth');
+        return redirect()->action([MonthController::class, 'currentMonth']);
     }
 
     /**
@@ -148,9 +144,9 @@ class SurveyController extends Controller
         $user = Auth::user();
         if (!$user && $survey->is_private == 1)
         {
-            Session::put('message', Config::get('messages_de.access-denied'));
-            Session::put('msgType', 'danger');
-            return Redirect::action('MonthController@showMonth', array('year' => date('Y'),
+            session()->put('message', config('messages_de.access-denied'));
+            session()->put('msgType', 'danger');
+            return redirect()->action([MonthController::class, 'showMonth'], array('year' => date('Y'),
                                                                        'month' => date('m')));
         }
 
@@ -523,7 +519,7 @@ class SurveyController extends Controller
             $questionRevision->save($questionToModify);
         }
 
-        return Redirect::action('SurveyController@show', [ $survey->id ]);
+        return redirect()->action([SurveyController::class, 'show'], [ $survey->id ]);
     }
 
 

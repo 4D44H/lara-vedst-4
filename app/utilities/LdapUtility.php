@@ -23,7 +23,7 @@ class LdapUtility
     {
         // CONNECTING TO LDAP SERVER
 
-        $ldapConn = ldap_connect(\Config::get('bcLDAP.server'), \Config::get('bcLDAP.port'));
+        $ldapConn = ldap_connect(config('bcLDAP.server'), config('bcLDAP.port'));
 
         // Set some ldap options for talking to AD
         // LDAP_OPT_PROTOCOL_VERSION: LDAP protocol version
@@ -33,8 +33,8 @@ class LdapUtility
 
         // Bind as a domain admin
         $ldap_bind = ldap_bind($ldapConn,
-            Config::get('bcLDAP.admin-username'),
-            Config::get('bcLDAP.admin-password'));
+            config('bcLDAP.admin-username'),
+            config('bcLDAP.admin-password'));
 
         return $ldapConn;
     }
@@ -49,8 +49,8 @@ class LdapUtility
         foreach (self::OUS as $ou) {
             // Search for a bc-Club user with the uid number entered
             $search = ldap_search($ldapConn,
-                Config::get('bcLDAP.' . $ou) .
-                Config::get('bcLDAP.base-dn'),
+                config('bcLDAP.' . $ou) .
+                config('bcLDAP.base-dn'),
                 '(uid=' . $userId . ')');
             $userEntry = ldap_first_entry($ldapConn, $search);
             if ($userEntry !== false) {

@@ -25,6 +25,8 @@ package-lock.json
 .env-prod
 .env-local
 .env.testing
+.env.backup
+.env.production
 
 # Composer specific files
 composer.phar
@@ -39,13 +41,18 @@ config/bd_users.initial.php
 config/bergfest_users.initial.php
 
 # IDE related files
-.idea/
 _ide_helper.php
 _ide_helper_models.php
 .phpstorm.meta.php
+/.fleet
+/.idea
+/.vscode
 
 # Misc
+/storage/*.key
 .DS_Store
 Thumbs.db
+Homestead.json
+Homestead.yaml
 
 .phpunit.*

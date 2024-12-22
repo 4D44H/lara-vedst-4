@@ -15,7 +15,7 @@ use Lara\ShiftType;
 use Lara\Status;
 use Lara\Utilities;
 use Lara\utilities\RoleUtility;
-use Session;
+
 
 class ShiftController extends Controller
 {
@@ -67,22 +67,22 @@ class ShiftController extends Controller
     public function update(Request $request, $id)
     {
         // Check if it's our form (CSRF protection)
-        if (Session::token() !== $request->input('_token')) {
+        if (session()->token() !== $request->input('_token')) {
             return response()->json(["errorCode" => 'sessionExpired'], 401);
         }
 
         Utilities::clearIcalCache();
 
         // If we only want to modify the shiftType via management pages - do it without evaluating the rest
-        if (!empty($request->get('shiftTypeId')) && is_numeric($request->get('shiftTypeId'))) {
+        if (!empty($request->input('shiftTypeId')) && is_numeric($request->input('shiftTypeId'))) {
 
             // Find the corresponding shift object
             /** @var Shift $shift */
-            $shift = Shift::query()->where('id', '=', $request->get('entryId'))->with('schedule')->with('schedule.event')
+            $shift = Shift::query()->where('id', '=', $request->input('entryId'))->with('schedule')->with('schedule.event')
                 ->first();
 
             // Substitute values
-            $shift->shifttype_id = $request->get('shiftTypeId');
+            $shift->shifttype_id = $request->input('shiftTypeId');
             $shift->save();
 
             // Log changes
@@ -96,13 +96,13 @@ class ShiftController extends Controller
         }
 
         // Extract request data
-        $shiftId = $request->get('entryId');
-        $userName = $request->get('userName');
-        $ldapId = $request->get('ldapId');
-        $timestamp = $request->get('timestamp');
-        $userClub = $request->get('userClub');
-        $userComment = $request->get('userComment');
-        $password = $request->get('password');
+        $shiftId = $request->input('entryId');
+        $userName = $request->input('userName');
+        $ldapId = $request->input('ldapId');
+        $timestamp = $request->input('timestamp');
+        $userClub = $request->input('userClub');
+        $userComment = $request->input('userComment');
+        $password = $request->input('password');
 
         // Check if someone modified LDAP ID manually
         if (!empty($ldapId) && !is_numeric($ldapId)) {
@@ -291,9 +291,9 @@ class ShiftController extends Controller
 
         // Check if shift exists
         if (is_null($shift)) {
-            Session::put('message', 'Fehler: Löschvorgang abgebrochen - der Dienstplaneintrag existiert nicht.');
-            Session::put('msgType', 'danger');
-            return Redirect::back();
+            session()->put('message', 'Fehler: Löschvorgang abgebrochen - der Dienstplaneintrag existiert nicht.');
+            session()->put('msgType', 'danger');
+            return back();
         }
         Utilities::clearIcalCache();
 

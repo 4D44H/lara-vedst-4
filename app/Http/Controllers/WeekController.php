@@ -5,15 +5,12 @@ namespace Lara\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Lara\Survey;
 use Request;
-use Redirect;
 use View;
 use Cache;
 use DateTime;
 use DateInterval;
-
 use Lara\Http\Requests;
 use Lara\Http\Controllers\Controller;
-
 use Lara\ClubEvent;
 use Lara\Schedule;
 use Lara\Person;
@@ -31,7 +28,7 @@ class WeekController extends Controller {
     public function currentWeek()
     {   $currentDate  = new DateTime();
         
-	        return Redirect::action('WeekController@showWeek', array('year' => $currentDate->format("Y"),
+	        return redirect()->action([WeekController::class, 'showWeek'], array('year' => $currentDate->format("Y"),
     	                                                             'week' => $currentDate->format('W')));
     }
 	/**

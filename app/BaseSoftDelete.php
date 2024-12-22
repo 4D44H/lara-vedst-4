@@ -10,9 +10,11 @@ abstract class BaseSoftDelete extends Model
     use SoftDeletes;
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
 }

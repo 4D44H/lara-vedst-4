@@ -28,7 +28,7 @@
         <![endif]-->
 	</head>
 
-    <body @if(Session::get("language","de")  == "pirate")
+    <body @if(session("language","de")  == "pirate")
               style="background-image:url( {{asset('/background-pirate.jpg')}} ) !important;
                      background-size:initial;
                      background-position:center;"
@@ -36,7 +36,7 @@
 
         <!-- Set the language to the same as the server -->
         <script type="text/javascript">
-            localStorage.setItem('language', "{{ Session::get("language","de") }}");
+            localStorage.setItem('language', "{{ session("language","de") }}");
         </script>
 
 

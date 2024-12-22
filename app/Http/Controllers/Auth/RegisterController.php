@@ -101,7 +101,7 @@ class RegisterController extends Controller
 
         $this->authorize('create', User::class);
 
-        if (Gate::denies('createUserOfSection', $request->get('section'))) {
+        if (Gate::denies('createUserOfSection', $request->input('section'))) {
             Utilities::error('You cannot create a user of another section!');
             return redirect($this->redirectPath());
         }

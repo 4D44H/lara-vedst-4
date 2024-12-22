@@ -3,9 +3,8 @@
 namespace Lara\Http\Middleware;
 
 use Closure;
-use Redirect;
 use Auth;
-use Session;
+use Lara\Utilities;
 
 class RejectGuests
 {
@@ -20,10 +19,8 @@ class RejectGuests
     {
         if (Auth::check()) {
             return $next($request);
-        } else {
-            Session::put('message', 'Bitte einloggen');
-            Session::put('msgType', 'danger');
-            return Redirect('/');
         }
+        Utilities::error(__('auth.notAuthenticated'));
+        return redirect('/');
     }
 }

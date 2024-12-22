@@ -10,7 +10,6 @@ use Lara\Http\Middleware\RejectGuests;
 use Lara\Person;
 use Lara\Shift;
 use Lara\StatisticsInformation;
-use Redirect;
 use View;
 
 class StatisticsController extends Controller
@@ -158,7 +157,7 @@ class StatisticsController extends Controller
     {
         // fill empty parameters - no date selected means show current month and year
         if (!isset($id)) {
-            return Redirect::action('StatisticsController@showStatistics');
+            return redirect()->action([StatisticsController::class, 'showStatistics']);
         }
         request("year") ? $year = request("year") : $year = strftime('%Y');
         request("month") ? $month = request("month") : $month = strftime('%m');

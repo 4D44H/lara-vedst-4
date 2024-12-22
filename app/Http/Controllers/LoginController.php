@@ -2,7 +2,6 @@
 
 namespace Lara\Http\Controllers;
 
-use Config;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +16,7 @@ use Lara\User;
 use Lara\Utilities;
 use Lara\utilities\RoleUtility;
 use Log;
-use Session;
+
 
 /*
 --------------------------------------------------------------------------
@@ -57,7 +56,7 @@ class LoginController extends Controller
      */
     public function doLogout()
     {
-        Session::flush();
+        session()->flush();
         if (Auth::user()) {
             return $this->logout( request());
         }
@@ -190,8 +189,8 @@ class LoginController extends Controller
     protected function attemptLoginViaLDAPInternal(Request $request)
     {
             if ($request->input('username') === "1708") {
-                Session::put('message', 'Ne ne ne, nicht mit dieser Clubnummer, sie ist ja nur fur bc-Wiki zu benutzen ;)');
-                Session::put('msgType', 'danger');
+                session()->put('message', 'Ne ne ne, nicht mit dieser Clubnummer, sie ist ja nur fur bc-Wiki zu benutzen ;)');
+                session()->put('msgType', 'danger');
 
                 Log::warning('bc-Wiki login used (1708), access denied.');
 
@@ -199,7 +198,7 @@ class LoginController extends Controller
             }
 
             // CONNECTING TO LDAP SERVER
-            $ldapConn = ldap_connect(Config::get('bcLDAP.server'), Config::get('bcLDAP.port'));
+            $ldapConn = ldap_connect(config('bcLDAP.server'), config('bcLDAP.port'));
 
             // Set some ldap options for talking to AD
             // LDAP_OPT_PROTOCOL_VERSION: LDAP protocol version
@@ -209,8 +208,8 @@ class LoginController extends Controller
 
             // Bind as a domain admin
             $ldap_bind = ldap_bind($ldapConn,
-                Config::get('bcLDAP.admin-username'),
-                Config::get('bcLDAP.admin-password'));
+                config('bcLDAP.admin-username'),
+                config('bcLDAP.admin-password'));
 
 
 // INPUT VALIDATION AND ERROR HANDLING
@@ -237,8 +236,8 @@ class LoginController extends Controller
 
             // Search for a bc-Club user with the uid number entered
             $search = ldap_search($ldapConn,
-                Config::get('bcLDAP.bc-club-ou') .
-                Config::get('bcLDAP.base-dn'),
+                config('bcLDAP.bc-club-ou') .
+                config('bcLDAP.base-dn'),
                 '(uid=' . $request->input('username') . ')');
 
             $info = ldap_get_entries($ldapConn, $search);
@@ -257,8 +256,8 @@ class LoginController extends Controller
 
                 // Search for a Café-user with the uid number entered
                 $search = ldap_search($ldapConn,
-                    Config::get('bcLDAP.bc-cafe-ou') .
-                    Config::get('bcLDAP.base-dn'),
+                    config('bcLDAP.bc-cafe-ou') .
+                    config('bcLDAP.base-dn'),
                     '(uid=' . $request->input('username') . ')');
 
                 $info = ldap_get_entries($ldapConn, $search);
@@ -277,8 +276,8 @@ class LoginController extends Controller
             if ($info['count'] === 0) {
                 ldap_unbind($ldapConn);
 
-                Session::put('message', Config::get('messages_de.uid-not-found'));
-                Session::put('msgType', 'danger');
+                session()->put('message', config('messages_de.uid-not-found'));
+                session()->put('msgType', 'danger');
 
                 Log::info('Auth fail: wrong userID given (username: ' . $request->input('username') . ').');
 
@@ -295,9 +294,9 @@ class LoginController extends Controller
             if ($userGroup === "bc-Club") {
                 // Check if user has MARKETING rights in bc-CLub
                 $searchGroup = ldap_search($ldapConn,
-                    Config::get('bcLDAP.bc-club-group-ou') .
-                    Config::get('bcLDAP.base-dn'),
-                    Config::get('bcLDAP.bc-club-marketing-group'));
+                    config('bcLDAP.bc-club-group-ou') .
+                    config('bcLDAP.base-dn'),
+                    config('bcLDAP.bc-club-marketing-group'));
 
                 $infoGroup = ldap_get_entries($ldapConn, $searchGroup);
 
@@ -310,9 +309,9 @@ class LoginController extends Controller
 
                 // Check if user has MANAGEMENT rights in bc-CLub
                 $searchGroup = ldap_search($ldapConn,
-                    Config::get('bcLDAP.bc-club-group-ou') .
-                    Config::get('bcLDAP.base-dn'),
-                    Config::get('bcLDAP.bc-club-management-group'));
+                    config('bcLDAP.bc-club-group-ou') .
+                    config('bcLDAP.base-dn'),
+                    config('bcLDAP.bc-club-management-group'));
 
                 $infoGroup = ldap_get_entries($ldapConn, $searchGroup);
 
@@ -324,9 +323,9 @@ class LoginController extends Controller
             } elseif ($userGroup === "bc-Café") {
                 // Check if user has MARKETING rights in bc-Café
                 $searchGroup = ldap_search($ldapConn,
-                    Config::get('bcLDAP.bc-cafe-group-ou') .
-                    Config::get('bcLDAP.base-dn'),
-                    Config::get('bcLDAP.bc-cafe-marketing-group'));
+                    config('bcLDAP.bc-cafe-group-ou') .
+                    config('bcLDAP.base-dn'),
+                    config('bcLDAP.bc-cafe-marketing-group'));
 
                 $infoGroup = ldap_get_entries($ldapConn, $searchGroup);
 
@@ -339,9 +338,9 @@ class LoginController extends Controller
 
                 // Check if user has MANAGEMENT rights in bc-Café
                 $searchGroup = ldap_search($ldapConn,
-                    Config::get('bcLDAP.bc-cafe-group-ou') .
-                    Config::get('bcLDAP.base-dn'),
-                    Config::get('bcLDAP.bc-cafe-management-group'));
+                    config('bcLDAP.bc-cafe-group-ou') .
+                    config('bcLDAP.base-dn'),
+                    config('bcLDAP.bc-cafe-management-group'));
 
                 $infoGroup = ldap_get_entries($ldapConn, $searchGroup);
 
@@ -357,7 +356,7 @@ class LoginController extends Controller
 
 
             // Checks if user LDAP ID is among hardcoded admin LDAP IDs from the config file
-            if (in_array($info[0]['uidnumber'][0], Config::get('bcLDAP.admin-ldap-id'))) {
+            if (in_array($info[0]['uidnumber'][0], config('bcLDAP.admin-ldap-id'))) {
                 $userGroup = "admin";
             }
 
@@ -483,7 +482,7 @@ class LoginController extends Controller
      */
     protected function loginFailed()
     {
-        Utilities::error(Config::get('messages_de.login-fail'));
+        Utilities::error(config('messages_de.login-fail'));
         $this->incrementLoginAttempts(request());
         return redirect()->back()->withInput(request()->all());
     }

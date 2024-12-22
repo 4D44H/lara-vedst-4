@@ -28,7 +28,7 @@
                 </span>
             </div>
         @else
-            {{-- meaning Session::has'userId' OR !$survey->is_private == 0 --}}
+            {{-- meaning session()->has'userId' OR !$survey->is_private == 0 --}}
             {{-- so session has a valid user OR the guest can see this survey because it isn't private --}}
             <div class="cal-event {{ $classString }} palette-Purple-900 bg word-break section-filter section-survey">
                 <i class="fa fa-chart-bar"></i>

@@ -15,7 +15,7 @@ return [
     |
     | You want to add a new language? Steps:
     | in config/language.php add it in the following form: 'de' => 'Deutsch',
-    | in lara/resources/lang add a new folder + file in this style
+    | in lara//lang add a new folder + file in this style
     |
     |
     */

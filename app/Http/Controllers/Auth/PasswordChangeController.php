@@ -10,7 +10,6 @@ use Lara\LdapPlatform;
 use Lara\User;
 use Lara\Utilities;
 use Lara\utilities\LdapUtility;
-use Redirect;
 use Request;
 use Validator;
 use View;
@@ -29,7 +28,7 @@ class PasswordChangeController extends Controller
         // Get old password and check that it matches the one stored in the DB
         $validator = $this->validator($request->all());
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->withInput();
         }
         $oldPassword = $request->input('old-password');
 
@@ -39,7 +38,7 @@ class PasswordChangeController extends Controller
 
         if (!$isPasswordCorrect) {
             Utilities::error(trans('auth.passwordDoesNotMatch'));
-            return Redirect::back();
+            return back();
         }
 
         $newPassword = $request->input('password');
@@ -56,7 +55,7 @@ class PasswordChangeController extends Controller
 */
         Utilities::success(trans('auth.passwordChanged'));
 
-        return Redirect::to('/');
+        return redirect('/');
     }
 
     public function validator($data)

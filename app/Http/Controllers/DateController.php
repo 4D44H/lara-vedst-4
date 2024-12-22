@@ -4,7 +4,6 @@ namespace Lara\Http\Controllers;
 
 use Carbon\Carbon;
 use Request;
-use Redirect;
 use View;
 
 use Lara\Http\Requests;
@@ -25,7 +24,8 @@ class DateController extends Controller {
      */
     public function currentDate()
     {
-        return Redirect::action( 'DateController@showDate', ['year' => date("Y"),
+        return redirect()->action( [DateController::class,'showDate'], 
+        ['year' => date("Y"),
                                                              'month' => date("m"),
                                                              'day' => date("d")] );
     }

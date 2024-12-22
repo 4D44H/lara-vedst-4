@@ -3,10 +3,10 @@
 namespace Lara\Http\Middleware;
 
 use Closure;
+use Lara\Http\Controllers\MonthController;
 use Lara\Survey;
 use Lara\utilities\RoleUtility;
 use PhpParser\Node\Scalar\String_;
-use Redirect;
 
 class Creator
 {
@@ -33,7 +33,7 @@ class Creator
         } else {
             $request->session()->put('message', 'Dir fehlt die nötige Berechtigung!');
             $request->session()->put('msgType', 'danger');
-            return Redirect::action('MonthController@currentMonth');
+            return redirect()->action([MonthController::class, 'currentMonth']);
         }
     }
 }

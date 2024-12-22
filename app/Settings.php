@@ -24,7 +24,7 @@ class Settings extends Model
             return $attr != 'userId';
         })->each(function ($attr) {
             if (isset($this[$attr]) && !is_null($this[$attr])) {
-                \Session::put($attr, $this[$attr]);
+                session([$attr, $this[$attr]]);
             }
         });
     }

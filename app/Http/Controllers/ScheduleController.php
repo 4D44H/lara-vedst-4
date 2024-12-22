@@ -4,7 +4,7 @@ namespace Lara\Http\Controllers;
 
 use DateTime;
 use Request;
-use Session;
+
 use Input;
 use Hash;
 use Lara\Logging;
@@ -126,9 +126,9 @@ class ScheduleController extends Controller
 
         // Check if the schedule exists
         if ( is_null($schedule) ) {
-            Session::put('message', 'Fehler: Löschvorgang abgebrochen - der Dienstplaneintrag existiert nicht.');
-            Session::put('msgType', 'danger');
-            return Redirect::back();
+            session()->put('message', 'Fehler: Löschvorgang abgebrochen - der Dienstplaneintrag existiert nicht.');
+            session()->put('msgType', 'danger');
+            return back();
         }
         // Delete all corresponding shifts first because of dependencies in database
         foreach ( $schedule->shifts as $shift ) {

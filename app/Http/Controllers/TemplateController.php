@@ -18,7 +18,7 @@ use Lara\ShiftType;
 use Lara\Template;
 use Lara\Utilities;
 use Lara\utilities\RoleUtility;
-use Session;
+
 
 class TemplateController extends Controller
 {
@@ -224,8 +224,8 @@ class TemplateController extends Controller
         }
         $template->delete();
 
-        Session::put('message', trans("mainLang.messageSuccessfulDeleted"));
-        Session::put('msgType', 'success');
+        session()->put('message', trans("mainLang.messageSuccessfulDeleted"));
+        session()->put('msgType', 'success');
 
         return redirect()->route('template.overview');
     }

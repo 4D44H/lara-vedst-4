@@ -6,7 +6,7 @@ namespace Lara;
 use Auth;
 use Illuminate\Support\Facades\Cache;
 use Lara\Http\Controllers\IcalController;
-use Session;
+
 
 
 class Utilities
@@ -89,17 +89,15 @@ class Utilities
 
     static function error($message)
     {
-        if (!Session::has('message')) {
-            Session::put('message', $message);
-            Session::put('msgType', 'danger');
+        if (!session()->has('message')) {
+            session(['message' => $message, 'msgType' => 'danger']);
         }
     }
 
     static function success($message)
     {
-        if (!Session::has('message')) {
-            Session::put('message', $message);
-            Session::put('msgType', 'success');
+        if (!session()->has('message')) {
+            session(['message'=> $message, 'msgType' => 'success']);
         }
     }
 }

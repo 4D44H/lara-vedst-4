@@ -92,8 +92,13 @@ class ClubEvent extends Model
         'canceled'
     ];
 
-    protected $dates = [
-        'unlock_date',
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'unlock_date' => 'datetime',
     ];
 
 

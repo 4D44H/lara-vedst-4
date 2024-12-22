@@ -65,7 +65,7 @@
                             <span class="d-md-none ms-2">{{ __('mainLang.language') }}</span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            @foreach (Config::get('languages') as $lang => $language)
+                            @foreach (config('languages') as $lang => $language)
                                 <li class="languageSwitcher dropdown-item"><a class="nav-link"
                                         href="{{ route('lang.switch', $lang) }}"
                                         data-language="{{ $lang }}"><i class="fa fa-globe"

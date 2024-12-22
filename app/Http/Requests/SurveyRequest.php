@@ -42,7 +42,10 @@ class SurveyRequest extends Request
             'type_select.*' => 'in:1,2,3|required',
         ];
 
-        $questions_type = $this->request->get('type_select');
+        
+
+
+        $questions_type = request('type_select');
         foreach($questions_type as $key => $question_type) {
             if ($question_type === 3) {
                 $rules['answerOption.' . $key] = 'required';
@@ -56,13 +59,13 @@ class SurveyRequest extends Request
     {
         $messages = [];
 
-        foreach($this->request->get('questionText') as $key => $val) {
+        foreach(request('questionText') as $key => $val) {
             $messages['questionText.'.$key.'.string'] = 'Die Frage #'.($key+1).'muss eine Zeichenkette sein.';
             $messages['questionText.'.$key.'.min'] = 'Die Frage #'.($key+1).' muss mindestens :min Zeichen enthalten.';
             $messages['questionText.'.$key.'.required'] = 'Die Frage #'.($key+1).' wurde leer gelassen. Bitte fülle sie aus oder lösche sie!';
         }
 
-        foreach($this->request->get('type_select') as $key => $val) {
+        foreach(request('type_select') as $key => $val) {
             $messages['type_select.'.$key.'.in'] = 'Für die Frage #'.($key+1).' wurde ein fehlerhafter Fragetyp ausgewählt!';
             $messages['type_select.'.$key.'.required'] = 'Für die Frage #'.($key+1).' wurde kein Fragetyp ausgewählt!';
         }

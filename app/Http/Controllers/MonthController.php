@@ -10,7 +10,6 @@ use Lara\Http\Middleware\RejectGuests;
 use Lara\Section;
 use Lara\Survey;
 use Lara\utilities\CacheUtility;
-use Redirect;
 use View;
 
 
@@ -31,7 +30,7 @@ class MonthController extends Controller
      */
     public function currentMonth()
     {
-        return Redirect::action('MonthController@showMonth', [
+        return redirect()->action([MonthController::class, 'showMonth'], [
             'year'  => date("Y"),
             'month' => date('m'),
         ]);

@@ -2,7 +2,6 @@
 
 namespace Lara\Console\Commands;
 
-use Config;
 use Illuminate\Console\Command;
 use Lara\LdapPlatform;
 use Lara\Person;
@@ -67,7 +66,7 @@ class LDAPsync extends Command
 
 // CONNECTING TO LDAP SERVER
 
-        $ldapConn = ldap_connect(Config::get('bcLDAP.server'), Config::get('bcLDAP.port'));
+        $ldapConn = ldap_connect(config('bcLDAP.server'), config('bcLDAP.port'));
 
         // Set some ldap options for talking to AD
         // LDAP_OPT_PROTOCOL_VERSION: LDAP protocol version
@@ -77,8 +76,8 @@ class LDAPsync extends Command
 
         // Bind as a domain admin
         $ldap_bind = ldap_bind($ldapConn,
-            Config::get('bcLDAP.admin-username'),
-            Config::get('bcLDAP.admin-password'));
+            config('bcLDAP.admin-username'),
+            config('bcLDAP.admin-password'));
         $allowedSection = (new Section())->whereIn('title', ['bc-Club', 'bc-Café'])->get();
 
 // STARTING THE UPDATE
@@ -100,8 +99,8 @@ class LDAPsync extends Command
 
             // Search for a bc-Club user with the uid number entered
             $search = ldap_search($ldapConn,
-                Config::get('bcLDAP.bc-club-ou').
-                Config::get('bcLDAP.base-dn'),
+                config('bcLDAP.bc-club-ou').
+                config('bcLDAP.base-dn'),
                 '(uid='.$person->prsn_ldap_id.')');
 
             $info = ldap_get_entries($ldapConn, $search);
@@ -113,8 +112,8 @@ class LDAPsync extends Command
 
                 // Search for a Café-user with the uid number entered
                 $search = ldap_search($ldapConn,
-                    Config::get('bcLDAP.bc-cafe-ou').
-                    Config::get('bcLDAP.base-dn'),
+                    config('bcLDAP.bc-cafe-ou').
+                    config('bcLDAP.base-dn'),
                     '(uid='.$person->prsn_ldap_id.')');
 
                 $info = ldap_get_entries($ldapConn, $search);

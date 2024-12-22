@@ -3,12 +3,8 @@
 namespace Lara\Http\Middleware;
 
 use App;
-use Application;
 use Closure;
-use Config;
-use Log;
-use Redirector;
-use Session;
+use Illuminate\Http\Request;
 
 class Language
 {
@@ -19,19 +15,19 @@ class Language
      * @param  \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if (Session::has('language') && array_key_exists(Session::get('language'), Config::get('languages'))) {
-            App::setLocale(Session::get('language'));
+        if ($request->session()->has('language') && array_key_exists(session('language'), config('languages'))) {
+            App::setLocale(session('language'));
         } else {
             //Detect Browser Prefered language
             $locale = substr($request->server('HTTP_ACCEPT_LANGUAGE', "de"), 0, 2);
-            if (isset($locale) && array_key_exists($locale, Config::get('languages'))) {
+            if (isset($locale) && array_key_exists($locale, config('languages'))) {
                 App::setLocale($locale);
-                Session::put('language', $locale);
+                session(['language' => $locale]);
             } else {
                 //Optional as Laravel will automatically set the fallback language if there is none specified
-                App::setLocale(Config::get('app.locale'));
+                App::setLocale(config('app.locale'));
             }
         }
         
