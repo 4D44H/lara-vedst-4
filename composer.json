@@ -43,7 +43,7 @@
     "php": ">=7.3",
     "ext-json": "*",
     "bacon/bacon-qr-code": "^2.0",
-    "barryvdh/laravel-ide-helper": "^2.6",
+    "barryvdh/laravel-ide-helper": "^3.0",
     "eluceo/ical": "^2.0.0",
     "erusev/parsedown": "^1.7",
 
