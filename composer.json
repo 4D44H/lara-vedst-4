@@ -50,7 +50,7 @@
 
     "johngrogg/ics-parser": "^3",
     "justinrainbow/json-schema": "^5.2",
-    "laravel/framework": "^8",
+    "laravel/framework": "^10",
     "laravel/legacy-factories": "^1.3",
     "laravel/tinker": "^2.0",
     "laravel/ui": "^3.0",
